@@ -28,9 +28,14 @@ jobs:
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 658860694375.dkr.ecr.ap-south-1.amazonaws.com
           docker tag myntra-prod-b21:latest 658860694375.dkr.ecr.ap-south-1.amazonaws.com/myntra-repo:latest
           docker push  658860694375.dkr.ecr.ap-south-1.amazonaws.com/myntra-repo:latest
-
-      
+      - name: connect to EKS cluster
+        run: |
+          aws eks update-kubeconfig --region ap-south-1 --name b21-batch
           
+
+      - name: deploy to EKS
+        run: |
+          kubectl apply -f k8s/app/
 
 
 
